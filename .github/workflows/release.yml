@@ -31,6 +31,9 @@ jobs:
       - name: Install locked dependencies
         if: steps.prepare.outputs.mode != 'skip'
         run: pnpm install --frozen-lockfile
+      - name: Format updated version files
+        if: steps.prepare.outputs.mode == 'bump'
+        run: pnpm exec prettier --write package.json extension/manifest.json
       - name: Validate and package the candidate version
         if: steps.prepare.outputs.mode != 'skip'
         run: pnpm package
