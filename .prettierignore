@@ -2,5 +2,5 @@ node_modules/
 dist/
 release/
 output/
-package-lock.json
+pnpm-lock.yaml
 .playwright-cli/
