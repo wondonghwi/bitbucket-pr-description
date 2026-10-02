@@ -76,7 +76,7 @@ pnpm demo     # 가상 PR 미리보기: http://127.0.0.1:4173
 pnpm package  # 설치용 ZIP 생성
 ```
 
-기능·빌드·테스트 코드를 `main`에 push하면 GitHub Actions가 패치 버전을 올리고, 검증을 통과한 설치용 ZIP을 [Releases](https://github.com/wondonghwi/bitbucket-pr-description/releases)에 발행합니다. 예를 들어 `0.1.1 → 0.1.2`로 올라가며, README나 미리보기만 수정하면 버전을 올리지 않습니다. 버전 파일이나 태그를 직접 수정할 필요가 없습니다.
+기능·빌드·테스트 코드를 `main`에 push하면 GitHub Actions가 패치 버전을 올리고, 검증을 통과한 설치용 ZIP을 [Releases](https://github.com/wondonghwi/bitbucket-pr-description/releases)에 발행합니다. 예를 들어 `0.1.1 → 0.1.2`로 올라가며, README나 미리보기만 수정하면 버전을 올리지 않습니다. 버전 파일이나 태그를 직접 수정할 필요가 없습니다. 자동 배포가 끝나면 `git pull --ff-only`로 버전 커밋도 받아주세요.
 
 릴리스가 실패하면 [Actions의 Release 실행](https://github.com/wondonghwi/bitbucket-pr-description/actions/workflows/release.yml)에서 재실행할 수 있습니다. 이미 만든 태그가 있으면 같은 버전의 배포를 이어갑니다.
 
