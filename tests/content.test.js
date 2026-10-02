@@ -8,6 +8,7 @@ before(async () => {
   const result = await build({
     entryPoints: ["src/content.js"],
     bundle: true,
+    define: { __APP_VERSION__: JSON.stringify("0.1.1") },
     write: false,
     format: "iife",
     loader: { ".css": "text" },
@@ -188,4 +189,91 @@ test("closing during fetch cancels it and reopening retries", async (t) => {
     root().querySelector("article").textContent,
     "Sample description",
   );
+});
+
+test("search navigates matches, survives format changes and resets on a different PR", async (t) => {
+  const { root, win, toggle } = setup(t, async () =>
+    response(42, "API request, api response"),
+  );
+  toggle().click();
+  await tick();
+  const search = root().querySelector('input[type="search"]');
+  search.value = "api";
+  search.dispatchEvent(new win.Event("input"));
+  assert.equal(root().querySelectorAll("mark").length, 2);
+  assert.equal(root().querySelector(".search-count").textContent, "1 / 2");
+  root().querySelector('[aria-label="Next match"]').click();
+  assert.equal(root().querySelector(".search-count").textContent, "2 / 2");
+  search.dispatchEvent(
+    new win.KeyboardEvent("keydown", { key: "Enter", shiftKey: true }),
+  );
+  assert.equal(root().querySelector(".search-count").textContent, "1 / 2");
+  root().querySelectorAll(".tab")[1].click();
+  assert.equal(root().querySelectorAll(".markdown mark").length, 2);
+  search.value = "absent";
+  search.dispatchEvent(new win.Event("input"));
+  assert.equal(root().querySelector(".search-count").textContent, "No matches");
+  assert.equal(
+    root().querySelector('[aria-label="Next match"]').disabled,
+    true,
+  );
+  win.history.pushState({}, "", "/example/sample/pull-requests/43/diff");
+  win.dispatchEvent(new win.PopStateEvent("popstate"));
+  await tick();
+  assert.equal(search.value, "");
+  assert.equal(root().querySelectorAll("mark").length, 0);
+});
+
+test("copies raw Markdown only on user action and handles denied clipboard access", async (t) => {
+  const { root, win, toggle } = setup(t, async () =>
+    response(42, "**Markdown**"),
+  );
+  const copied = [];
+  win.navigator.clipboard = { writeText: async (value) => copied.push(value) };
+  const copy = root().querySelector('[aria-label="Copy Markdown"]');
+  assert.equal(copy.disabled, true);
+  assert.equal(copied.length, 0);
+  toggle().click();
+  await tick();
+  assert.equal(copied.length, 0);
+  copy.click();
+  await tick();
+  assert.deepEqual(copied, ["**Markdown**"]);
+  assert.match(root().querySelector(".notice").textContent, /copied/);
+  win.navigator.clipboard.writeText = async () => {
+    throw new Error("denied");
+  };
+  copy.click();
+  await tick();
+  assert.match(root().querySelector(".notice").textContent, /copy it manually/);
+  assert.equal(copy.disabled, false);
+  const release = root().querySelector("footer a:last-child");
+  assert.match(release.textContent, /v0.1.1/);
+  assert.equal(
+    release.href,
+    "https://github.com/wondonghwi/bitbucket-pr-description/releases/latest",
+  );
+});
+
+test("a late clipboard completion cannot overwrite a new PR or leave copying disabled on reopen", async (t) => {
+  const { root, win, toggle } = setup(t, async () => response(42));
+  let complete;
+  win.navigator.clipboard = {
+    writeText: () =>
+      new Promise((resolve) => {
+        complete = resolve;
+      }),
+  };
+  toggle().click();
+  await tick();
+  root().querySelector('[aria-label="Copy Markdown"]').click();
+  toggle().click();
+  complete();
+  await tick();
+  toggle().click();
+  assert.equal(
+    root().querySelector('[aria-label="Copy Markdown"]').disabled,
+    false,
+  );
+  assert.equal(root().querySelector(".notice").hidden, true);
 });

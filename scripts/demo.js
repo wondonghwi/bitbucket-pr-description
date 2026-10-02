@@ -6,9 +6,13 @@ import { build } from "esbuild";
 const demoAdapter = fileURLToPath(
   new URL("../docs/demo-adapter.js", import.meta.url),
 );
+const { version } = JSON.parse(
+  await readFile("extension/manifest.json", "utf8"),
+);
 const result = await build({
   entryPoints: ["src/content.js"],
   bundle: true,
+  define: { __APP_VERSION__: JSON.stringify(version) },
   write: false,
   format: "iife",
   loader: { ".css": "text" },

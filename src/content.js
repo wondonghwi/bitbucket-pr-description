@@ -5,6 +5,10 @@ import {
 } from "./bitbucket.js";
 import { renderDescription } from "./render.js";
 import styles from "./panel.css";
+import { highlightMatches } from "./search.js";
+
+const VERSION =
+  typeof __APP_VERSION__ === "undefined" ? "dev" : __APP_VERSION__;
 
 const HOST_ID = "bbpd-extension";
 if (!document.getElementById(HOST_ID)) start();
@@ -63,7 +67,32 @@ function start() {
   refresh.title = "Refresh description";
   refresh.setAttribute("aria-label", "Refresh description");
   tabs.append(read, raw);
-  toolbar.append(tabs, refresh);
+  const copy = button("Copy", "tab");
+  copy.setAttribute("aria-label", "Copy Markdown");
+  copy.title = "Copy Markdown";
+  copy.disabled = true;
+  const tools = document.createElement("div");
+  tools.className = "tabs";
+  tools.append(copy, refresh);
+  toolbar.append(tabs, tools);
+  const searchBar = document.createElement("div");
+  searchBar.className = "search-bar";
+  const search = document.createElement("input");
+  search.type = "search";
+  search.placeholder = "Find in description";
+  search.maxLength = 256;
+  search.setAttribute("aria-label", "Find in description");
+  const count = text("span", "", "search-count");
+  count.setAttribute("role", "status");
+  const previous = button("↑", "icon-button");
+  previous.setAttribute("aria-label", "Previous match");
+  const next = button("↓", "icon-button");
+  next.setAttribute("aria-label", "Next match");
+  previous.disabled = next.disabled = true;
+  searchBar.append(search, count, previous, next);
+  const notice = text("div", "", "notice");
+  notice.setAttribute("role", "status");
+  notice.hidden = true;
   const status = text("div", "", "status");
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
@@ -79,9 +108,23 @@ function start() {
   overview.textContent = "Open Overview ↗";
   overview.target = "_blank";
   overview.rel = "noopener noreferrer";
-  const privacy = text("span", "Read-only · stays in this tab");
-  footer.append(overview, privacy);
-  panel.append(handle, header, context, toolbar, content, footer);
+  const release = document.createElement("a");
+  release.textContent = `v${VERSION} · Download latest ↗`;
+  release.href =
+    "https://github.com/wondonghwi/bitbucket-pr-description/releases/latest";
+  release.target = "_blank";
+  release.rel = "noopener noreferrer";
+  footer.append(overview, release);
+  panel.append(
+    handle,
+    header,
+    context,
+    toolbar,
+    searchBar,
+    notice,
+    content,
+    footer,
+  );
   shadow.append(panel);
 
   const layoutStyle = document.createElement("style");
@@ -111,6 +154,42 @@ function start() {
   let pending = null;
   let requestId = 0;
   let desiredWidth = 420;
+  let matches = [];
+  let activeMatch = -1;
+
+  function clearSearch() {
+    matches = [];
+    activeMatch = -1;
+    count.textContent = "";
+    previous.disabled = next.disabled = true;
+  }
+
+  function updateSearch() {
+    clearSearch();
+    const query = search.value.trim();
+    matches = highlightMatches(article, query);
+    if (!query) return;
+    count.textContent = matches.length ? `0 / ${matches.length}` : "No matches";
+    previous.disabled = next.disabled = !matches.length;
+    if (matches.length) moveMatch(1);
+  }
+
+  function moveMatch(direction) {
+    if (!matches.length) return;
+    matches[activeMatch]?.removeAttribute("data-active");
+    activeMatch = (activeMatch + direction + matches.length) % matches.length;
+    const match = matches[activeMatch];
+    match.dataset.active = "";
+    // Reveal matches in collapsed sections without affecting the Bitbucket page.
+    for (
+      let parent = match.parentElement;
+      parent && parent !== article;
+      parent = parent.parentElement
+    )
+      if (parent.tagName === "DETAILS") parent.open = true;
+    match.scrollIntoView?.({ block: "nearest" });
+    count.textContent = `${activeMatch + 1} / ${matches.length}`;
+  }
 
   function setWidth(value) {
     desiredWidth = Math.max(320, Math.min(value, 700));
@@ -143,6 +222,7 @@ function start() {
     trigger.setAttribute("aria-expanded", String(value));
     applyLayout();
     if (value) {
+      copy.disabled = !data?.raw.trim();
       close.focus();
       if (!data && !pending) void reload();
     } else {
@@ -162,6 +242,8 @@ function start() {
   function showDescription() {
     read.setAttribute("aria-pressed", String(mode === "preview"));
     raw.setAttribute("aria-pressed", String(mode === "markdown"));
+    copy.disabled = !data?.raw.trim();
+    clearSearch();
     if (!data) return;
     article.replaceChildren();
     if (!data.raw.trim()) {
@@ -192,12 +274,16 @@ function start() {
         );
       }
     }
+    updateSearch();
   }
 
   async function reload() {
     if (!current || !opened) return;
     cancelRequest();
     data = null;
+    copy.disabled = true;
+    notice.hidden = true;
+    clearSearch();
     article.replaceChildren();
     status.hidden = false;
     status.textContent = "Loading description…";
@@ -239,6 +325,10 @@ function start() {
     if (next?.key !== current?.key) {
       cancelRequest();
       data = null;
+      copy.disabled = true;
+      notice.hidden = true;
+      search.value = "";
+      clearSearch();
       article.replaceChildren();
       content.scrollTop = 0;
       current = next;
@@ -274,6 +364,33 @@ function start() {
   trigger.addEventListener("click", () => setOpen(!opened, opened));
   close.addEventListener("click", () => setOpen(false, true));
   refresh.addEventListener("click", () => void reload());
+  search.addEventListener("input", updateSearch);
+  search.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      moveMatch(event.shiftKey ? -1 : 1);
+    }
+  });
+  previous.addEventListener("click", () => moveMatch(-1));
+  next.addEventListener("click", () => moveMatch(1));
+  copy.addEventListener("click", async () => {
+    if (!data?.raw.trim()) return;
+    const key = current.key;
+    const sequence = requestId;
+    copy.disabled = true;
+    let message;
+    try {
+      await navigator.clipboard.writeText(data.raw);
+      message = "Markdown copied.";
+    } catch {
+      message =
+        "Could not copy. Select the text in Markdown view and copy it manually.";
+    }
+    if (current?.key !== key || sequence !== requestId || !opened) return;
+    copy.disabled = !data?.raw.trim();
+    notice.textContent = message;
+    notice.hidden = false;
+  });
   read.addEventListener("click", () => {
     mode = "preview";
     showDescription();
