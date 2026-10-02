@@ -12,6 +12,8 @@ Checked on 2026-10-02. No real Bitbucket account, private repository response, o
 - Intercepted the fictional PR page and PR response in the test browser. Confirmed content-script injection, button placement, same-origin description GET, rendered description, image removal, unsafe-link removal, and no browser console errors.
 - Checked the local demo in Chrome: side-by-side layout, Markdown mode, and Escape returning the page to full width. The README screenshot comes from this fictional demo.
 - Verified ZIP integrity and its contents: manifest, bundled content script, icons, MIT license, and DOMPurify license notice only.
+- Published the source and fictional preview on GitHub. [Check on main](https://github.com/wondonghwi/bitbucket-pr-description/actions/runs/36954136354), [Check on v0.1.0](https://github.com/wondonghwi/bitbucket-pr-description/actions/runs/36954158877), and [Release packaging](https://github.com/wondonghwi/bitbucket-pr-description/actions/runs/36954158897) all passed. The installation ZIP is available in the [v0.1.0 preview release](https://github.com/wondonghwi/bitbucket-pr-description/releases/tag/v0.1.0).
+- Downloaded the published ZIP, checked its GitHub-reported SHA-256 digest and archive integrity, and confirmed its eight files match the tested local build byte for byte.
 
 ## Not yet verified
 
@@ -19,7 +21,6 @@ Checked on 2026-10-02. No real Bitbucket account, private repository response, o
 - Exact placement and layout on the current live Bitbucket UI.
 - Organization-specific restrictions or managed-browser policies.
 - Actual Chrome 109 execution; the bundle targets Chrome 109, but browser checks used the installed current Chrome/Chromium builds.
-- GitHub Actions execution after publication.
 
 ## Live acceptance check
 
