@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bitbucket PR Description</title>
+    <link rel="stylesheet" href="popup.css" />
+    <script src="popup.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <img src="icons/icon48.png" alt="" width="40" height="40" />
+      <div>
+        <h1>Bitbucket PR Description</h1>
+        <p>코드와 PR 설명을 나란히</p>
+      </div>
+    </header>
+    <main>
+      <section class="version-card" aria-label="설치 정보">
+        <span>현재 설치 버전</span>
+        <strong id="version">확인 중…</strong>
+        <p id="install-mode" role="status">설치 방식을 확인하고 있습니다.</p>
+      </section>
+      <section aria-labelledby="update-heading">
+        <h2 id="update-heading">업데이트</h2>
+        <p id="update-help">설치 정보를 불러오고 있습니다.</p>
+        <a
+          id="update-link"
+          href="https://github.com/wondonghwi/bitbucket-pr-description#새-버전으로-업데이트하기"
+          target="_blank"
+          rel="noopener noreferrer"
+          >설치·업데이트 안내</a
+        >
+      </section>
+      <section>
+        <h2>사용하기</h2>
+        <p>
+          Bitbucket PR을 열고 Approve 옆의 <b>Description</b>을 누르세요.
+          확장프로그램을 업데이트한 뒤에는 PR 페이지를 새로고침하세요.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

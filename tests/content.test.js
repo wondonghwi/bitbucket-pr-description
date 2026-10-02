@@ -34,6 +34,9 @@ function setup(
     return this.hidden ? [] : [{}];
   };
   dom.window.fetch = fetcher;
+  dom.window.chrome = {
+    runtime: { getManifest: () => ({ version: "0.1.7" }) },
+  };
   dom.window.eval(script);
   const root = () =>
     dom.window.document.querySelector("#bbpd-extension").shadowRoot;
@@ -248,7 +251,7 @@ test("copies raw Markdown only on user action and handles denied clipboard acces
   assert.match(root().querySelector(".notice").textContent, /copy it manually/);
   assert.equal(copy.disabled, false);
   const release = root().querySelector("footer a:last-child");
-  assert.match(release.textContent, /v0.1.1/);
+  assert.match(release.textContent, /v0.1.7/);
   assert.equal(
     release.href,
     "https://github.com/wondonghwi/bitbucket-pr-description/releases/latest",

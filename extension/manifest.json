@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Bitbucket PR Description",
   "version": "0.1.1",
-  "description": "Keep the pull request description beside the diff. No tokens, accounts, or tracking.",
+  "description": "Bitbucket PR 화면에서 코드와 설명을 나란히 확인합니다.",
   "minimum_chrome_version": "109",
   "icons": {
     "16": "icons/icon16.png",
@@ -16,5 +16,9 @@
       "js": ["content.js"],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "action": {
+    "default_title": "Bitbucket PR Description · 설치 버전 및 업데이트",
+    "default_popup": "popup.html"
+  }
 }

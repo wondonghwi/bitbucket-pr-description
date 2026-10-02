@@ -8,7 +8,8 @@ import styles from "./panel.css";
 import { highlightMatches } from "./search.js";
 
 const VERSION =
-  typeof __APP_VERSION__ === "undefined" ? "dev" : __APP_VERSION__;
+  globalThis.chrome?.runtime?.getManifest?.().version ??
+  (typeof __APP_VERSION__ === "undefined" ? "dev" : __APP_VERSION__);
 
 const HOST_ID = "bbpd-extension";
 if (!document.getElementById(HOST_ID)) start();

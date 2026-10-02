@@ -10,6 +10,8 @@
 
 ## 주요 기능
 
+- 확장프로그램 아이콘에서 실제 설치 버전과 업데이트 방식을 확인합니다.
+
 - 코드 옆에서 PR 제목과 설명을 함께 확인합니다.
 - **Preview / Markdown**으로 읽기 화면과 원문을 전환합니다.
 - 설명 안에서 검색하고, 이전·다음 결과로 이동합니다.
@@ -19,13 +21,15 @@
 
 ## 설치
 
-1. [최신 버전 설치용 ZIP](https://github.com/wondonghwi/bitbucket-pr-description/releases/latest/download/bitbucket-pr-description.zip)을 다운로드합니다.
-2. ZIP의 압축을 풀고, 계속 사용할 폴더에 보관합니다. 설치 후에도 이 폴더가 필요합니다.
-3. Chrome 주소창에 `chrome://extensions`를 입력합니다.
-4. 오른쪽 위의 **개발자 모드**를 켭니다.
-5. **압축해제된 확장 프로그램을 로드합니다**를 누르고 **`manifest.json`이 들어 있는 폴더**를 선택합니다.
+현재는 웹스토어 등록 전 시험 버전입니다. [Releases](https://github.com/wondonghwi/bitbucket-pr-description/releases/latest)에서 **버전이 붙은 설치용 ZIP**을 선택하세요. `Source code (zip)`은 설치 파일이 아닙니다.
 
-Chrome Web Store에는 등록되어 있지 않습니다. Release의 **Source code (zip)** 대신 위의 설치용 ZIP을 사용하세요.
+1. `bitbucket-pr-description-버전.zip`을 다운로드하고 압축을 풉니다.
+2. 압축을 푼 폴더를 계속 사용할 위치에 보관합니다. 폴더 이름에 버전을 남겨두세요.
+3. Chrome 주소창에 `chrome://extensions`를 입력하고 **개발자 모드**를 켭니다.
+4. **압축해제된 확장 프로그램을 로드합니다**를 누르고 새 폴더의 **`manifest.json`이 들어 있는 위치**를 선택합니다.
+5. Chrome 카드의 버전이 다운로드한 버전과 같은지 확인합니다.
+
+Chrome 도구 모음의 확장프로그램 아이콘을 누르면 **현재 설치 버전과 업데이트 방식**을 확인할 수 있습니다. 필요하면 퍼즐 모양 메뉴에서 이 확장프로그램을 고정하세요.
 
 ## 사용법
 
@@ -41,14 +45,17 @@ Chrome Web Store에는 등록되어 있지 않습니다. Release의 **Source cod
 
 ## 새 버전으로 업데이트하기
 
-패널 아래에서 현재 버전과 **Download latest** 링크를 확인할 수 있습니다.
+**시험 설치는 새 버전을 별도로 등록합니다. 기존 파일을 덮어쓰지 않습니다.**
 
-1. [최신 설치용 ZIP](https://github.com/wondonghwi/bitbucket-pr-description/releases/latest/download/bitbucket-pr-description.zip)을 받습니다.
-2. 기존에 설치한 폴더의 파일을 새 ZIP의 파일로 교체합니다. 폴더 경로는 유지합니다.
-3. `chrome://extensions`에서 확장프로그램 카드의 **새로고침 버튼**을 누릅니다.
-4. Bitbucket PR 페이지를 새로고침합니다.
+1. [최신 Release](https://github.com/wondonghwi/bitbucket-pr-description/releases/latest)에서 버전이 붙은 ZIP을 받습니다.
+2. 압축을 풀어 **새 버전 이름의 폴더**를 보관합니다.
+3. `chrome://extensions`에서 기존 Bitbucket PR Description의 스위치를 **끔**으로 바꿉니다.
+4. **압축해제된 확장 프로그램을 로드합니다**로 **새 버전 폴더**를 선택합니다.
+5. 새 카드에 새 버전이 표시되는지 확인하고 Bitbucket PR 페이지를 새로고침합니다.
 
-다운로드 가능한 버전은 자동으로 발행되지만, 이 설치 방식에서는 Chrome이 새 버전을 자동으로 설치하지 않습니다.
+새 버전이 정상 동작하면 Chrome에서 이전 버전 카드를 삭제해도 됩니다. 두 버전을 동시에 켜지 마세요. 카드에 이전 버전이 표시되면 이전 폴더를 선택한 것입니다.
+
+**파일 설치 없이 자동 업데이트하는 정식 배포 방식은 Chrome 웹스토어입니다.** 웹스토어 등록·심사 후 해당 항목에서 설치하면 이후 게시된 버전을 Chrome이 자동으로 업데이트합니다. 현재 GitHub Release의 자동 발행은 웹스토어 등록이나 설치된 확장프로그램의 자동 업데이트를 의미하지 않습니다. 등록을 진행할 때에는 [웹스토어 배포 안내](docs/WEBSTORE.md)를 참고하세요.
 
 ## 직접 수정하면서 사용하기
 

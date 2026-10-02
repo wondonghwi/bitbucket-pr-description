@@ -1,0 +1,103 @@
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #172b4d;
+  background: #fff;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  width: 350px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #dfe4ec;
+}
+h1 {
+  margin: 0;
+  font-size: 15px;
+}
+header p {
+  margin: 2px 0 0;
+  color: #626f86;
+  font-size: 12px;
+}
+main {
+  padding: 20px;
+}
+section + section {
+  margin-top: 20px;
+}
+h2 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+p {
+  margin: 0 0 12px;
+}
+.version-card {
+  padding: 14px;
+  background: #f5f7fa;
+  border: 1px solid #dfe4ec;
+  border-radius: 8px;
+}
+.version-card span {
+  display: block;
+  font-size: 11px;
+  color: #626f86;
+}
+.version-card strong {
+  display: block;
+  font-size: 25px;
+}
+.version-card p {
+  margin: 4px 0 0;
+  font-size: 12px;
+}
+a {
+  display: inline-block;
+  padding: 7px 12px;
+  border: 1px solid #0052cc;
+  border-radius: 5px;
+  color: #0052cc;
+  text-decoration: none;
+  font-weight: 600;
+}
+a:hover {
+  background: #e9f2ff;
+}
+a:focus-visible {
+  outline: 2px solid #0052cc;
+  outline-offset: 3px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #dce3ed;
+    background: #1d2125;
+  }
+  header {
+    border-color: #38414a;
+  }
+  header p,
+  .version-card span {
+    color: #9fadbc;
+  }
+  .version-card {
+    background: #22272b;
+    border-color: #38414a;
+  }
+  a {
+    color: #85b8ff;
+    border-color: #85b8ff;
+  }
+  a:hover {
+    background: #253b57;
+  }
+}
