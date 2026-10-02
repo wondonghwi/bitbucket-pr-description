@@ -1,6 +1,6 @@
 # Bitbucket PR Description
 
-**Bitbucket에서 코드와 PR 설명을 나란히 읽는 Chrome 확장프로그램입니다.**
+**Bitbucket에서 코드와 PR 설명을 나란히 읽는 무료 오픈소스 Chrome 확장프로그램입니다.**
 
 코드를 리뷰하면서 변경 이유나 확인 항목을 다시 읽으려면 **Files changed**와 **Overview** 탭을 오가야 합니다. 이 번거로움을 줄이기 위해, **Approve 옆의 Description 버튼**으로 PR 설명을 오른쪽 패널에 열 수 있게 만들었습니다.
 
@@ -11,7 +11,6 @@
 ## 주요 기능
 
 - 확장프로그램 아이콘에서 실제 설치 버전과 업데이트 방식을 확인합니다.
-
 - 코드 옆에서 PR 제목과 설명을 함께 확인합니다.
 - **Preview / Markdown**으로 읽기 화면과 원문을 전환합니다.
 - 설명 안에서 검색하고, 이전·다음 결과로 이동합니다.
@@ -21,7 +20,7 @@
 
 ## 설치
 
-현재는 웹스토어 등록 전 시험 버전입니다. [Releases](https://github.com/wondonghwi/bitbucket-pr-description/releases/latest)에서 **버전이 붙은 설치용 ZIP**을 선택하세요. `Source code (zip)`은 설치 파일이 아닙니다.
+현재는 설치용 ZIP으로 사용할 수 있습니다. [Releases](https://github.com/wondonghwi/bitbucket-pr-description/releases/latest)에서 **버전이 붙은 설치용 ZIP**을 선택하세요. `Source code (zip)`은 설치 파일이 아닙니다.
 
 1. `bitbucket-pr-description-버전.zip`을 다운로드하고 압축을 풉니다.
 2. 압축을 푼 폴더를 계속 사용할 위치에 보관합니다. 폴더 이름에 버전을 남겨두세요.
@@ -57,8 +56,6 @@ Chrome 도구 모음의 확장프로그램 아이콘을 누르면 **현재 설�
 
 새 버전이 정상 동작하면 Chrome에서 이전 버전 카드를 삭제해도 됩니다. 두 버전을 동시에 켜지 마세요. 카드에 이전 버전이 표시되면 이전 폴더를 선택한 것입니다.
 
-**파일 설치 없이 자동 업데이트하는 정식 배포 방식은 Chrome 웹스토어입니다.** 웹스토어 등록·심사 후 해당 항목에서 설치하면 이후 게시된 버전을 Chrome이 자동으로 업데이트합니다. 현재 GitHub Release의 자동 발행은 웹스토어 등록이나 설치된 확장프로그램의 자동 업데이트를 의미하지 않습니다. 등록을 진행할 때에는 [웹스토어 배포 안내](docs/WEBSTORE.md)를 참고하세요.
-
 ## 직접 수정하면서 사용하기
 
 Node.js 24.15 이상과 pnpm 10.33.0을 사용합니다.
@@ -84,10 +81,6 @@ pnpm check    # 포맷·테스트·빌드 확인
 pnpm demo     # 가상 PR 미리보기: http://127.0.0.1:4173
 pnpm package  # 설치용 ZIP 생성
 ```
-
-기능·빌드·테스트 코드를 `main`에 push하면 GitHub Actions가 패치 버전을 올리고, 검증을 통과한 설치용 ZIP을 [Releases](https://github.com/wondonghwi/bitbucket-pr-description/releases)에 발행합니다. 예를 들어 `0.1.1 → 0.1.2`로 올라가며, README나 미리보기만 수정하면 버전을 올리지 않습니다. 버전 파일이나 태그를 직접 수정할 필요가 없습니다. 자동 배포가 끝나면 `git pull --ff-only`로 버전 커밋도 받아주세요.
-
-릴리스가 실패하면 [Actions의 Release 실행](https://github.com/wondonghwi/bitbucket-pr-description/actions/workflows/release.yml)에서 재실행할 수 있습니다. 이미 만든 태그가 있으면 같은 버전의 배포를 이어갑니다.
 
 ## 지원 범위
 
