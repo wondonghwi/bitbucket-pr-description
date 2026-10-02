@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Bitbucket PR Description",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Bitbucket PR 화면에서 코드와 설명을 나란히 확인합니다.",
   "minimum_chrome_version": "109",
   "icons": {
