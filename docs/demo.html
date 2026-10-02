@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en" data-color-mode="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Bitbucket PR Description · Local demo</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #171a1e;
+        color: #b6c2cf;
+        font:
+          14px/1.6 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+      .top {
+        height: 58px;
+        border-bottom: 1px solid #333b44;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        gap: 14px;
+        background: #1d2125;
+      }
+      .brand {
+        color: #85b8ff;
+        font-weight: 700;
+        font-size: 17px;
+      }
+      .badge {
+        margin-left: auto;
+        font:
+          10px ui-monospace,
+          monospace;
+        border: 1px solid #465263;
+        border-radius: 4px;
+        padding: 3px 8px;
+        letter-spacing: 1px;
+      }
+      main {
+        padding: 30px;
+      }
+      .crumb {
+        font-size: 12px;
+        color: #8c9bab;
+      }
+      h1 {
+        font-size: 25px;
+        line-height: 1.35;
+        font-weight: 600;
+        color: #dce3ed;
+        margin: 14px 0 18px;
+        max-width: 850px;
+        letter-spacing: -0.4px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .branch {
+        background: #2c333a;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font:
+          12px ui-monospace,
+          monospace;
+      }
+      .open {
+        color: #85b8ff;
+        background: #253b57;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 11px;
+      }
+      .actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+      button {
+        background: #282e35;
+        border: 1px solid #3c4653;
+        color: #dce3ed;
+        border-radius: 5px;
+        height: 32px;
+        padding: 0 12px;
+        font:
+          600 13px -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        cursor: pointer;
+      }
+      .merge {
+        background: #e9b949;
+        color: #172b4d;
+        border-color: #e9b949;
+        margin-left: 8px;
+      }
+      .tabs {
+        display: flex;
+        gap: 25px;
+        border-bottom: 1px solid #333b44;
+        margin: 22px 0 20px;
+      }
+      .tabs a {
+        color: #8c9bab;
+        padding: 10px 0;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .tabs a.active {
+        color: #85b8ff;
+        border-bottom: 2px solid #579dff;
+      }
+      .diff-layout {
+        display: grid;
+        grid-template-columns: 190px minmax(0, 1fr);
+        gap: 18px;
+      }
+      .files {
+        border: 1px solid #333b44;
+        border-radius: 6px;
+        padding: 16px;
+        font-size: 12px;
+        min-height: 640px;
+      }
+      .files strong {
+        display: block;
+        margin-bottom: 16px;
+      }
+      .folder {
+        color: #8c9bab;
+        margin: 12px 0 6px;
+      }
+      .file {
+        padding: 7px;
+        color: #85b8ff;
+        border-radius: 3px;
+        background: #253b57;
+        overflow-wrap: anywhere;
+      }
+      .other {
+        padding: 7px;
+      }
+      .diff {
+        border: 1px solid #333b44;
+        border-radius: 6px;
+        overflow: hidden;
+        align-self: start;
+      }
+      .filename {
+        padding: 13px 16px;
+        background: #22272b;
+        font:
+          12px ui-monospace,
+          monospace;
+        border-bottom: 1px solid #333b44;
+      }
+      .chunk {
+        padding: 7px 16px;
+        background: #2c333a;
+        color: #8c9bab;
+        font:
+          11px ui-monospace,
+          monospace;
+      }
+      .code {
+        padding: 6px 0;
+        font:
+          12px/2 ui-monospace,
+          SFMono-Regular,
+          Consolas,
+          monospace;
+        overflow-x: auto;
+      }
+      .line {
+        display: flex;
+        white-space: pre;
+        min-width: 560px;
+      }
+      .number {
+        width: 44px;
+        flex-shrink: 0;
+        text-align: right;
+        padding-right: 14px;
+        color: #738496;
+        user-select: none;
+      }
+      .line code {
+        padding-left: 8px;
+        white-space: nowrap;
+      }
+      .plus {
+        background: #183c30;
+      }
+      .minus {
+        background: #422728;
+      }
+      .keyword {
+        color: #f19cbb;
+      }
+      .comment {
+        color: #8c9bab;
+      }
+      .note {
+        margin-top: 22px;
+        color: #738496;
+        font-size: 11px;
+      }
+      @media (max-width: 800px) {
+        main {
+          padding: 16px;
+        }
+        .diff-layout {
+          grid-template-columns: 1fr;
+        }
+        .files {
+          display: none;
+        }
+        h1 {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <span class="brand">▣ Bitbucket</span
+      ><span class="badge">LOCAL DEMO / FICTIONAL DATA</span>
+    </div>
+    <main>
+      <div class="crumb">
+        example &nbsp; / &nbsp; sample-web &nbsp; / &nbsp; Pull requests
+      </div>
+      <h1>Keep search results in sync with the latest query</h1>
+      <div class="row">
+        <span class="branch">feature/search-cancellation</span><span>→</span
+        ><span class="branch">main</span><span class="open">Open</span>
+        <div class="actions">
+          <button>Approve</button><button class="merge">Merge</button>
+        </div>
+      </div>
+      <nav class="tabs">
+        <a href="overview">Overview</a
+        ><a class="active" href="diff">Files changed &nbsp; 3</a
+        ><a href="commits">Commits &nbsp; 2</a>
+      </nav>
+      <div class="diff-layout">
+        <aside class="files">
+          <strong>▤ &nbsp; Filter files</strong>
+          <div class="folder">⌄ &nbsp; src</div>
+          <div class="file">useSearch.ts &nbsp; +18 −6</div>
+          <div class="other">SearchResults.tsx</div>
+          <div class="folder">⌄ &nbsp; tests</div>
+          <div class="other">search.test.ts</div>
+        </aside>
+        <section class="diff">
+          <div class="filename">⌄ &nbsp; src / hooks / useSearch.ts</div>
+          <div class="chunk">
+            @@ −12,14 +12,26 @@ &nbsp; useSearch(query: string)
+          </div>
+          <div class="code">
+            <div class="line">
+              <span class="number">12</span
+              ><code
+                ><span class="keyword">export function</span> useSearch(query:
+                string) {</code
+              >
+            </div>
+            <div class="line">
+              <span class="number">13</span
+              ><code>
+                <span class="keyword">const</span> [results, setResults] =
+                useState([]);</code
+              >
+            </div>
+            <div class="line plus">
+              <span class="number">14</span
+              ><code
+                >+ <span class="keyword">const</span> latestRequest =
+                useRef(0);</code
+              >
+            </div>
+            <div class="line"><span class="number">15</span><code> </code></div>
+            <div class="line">
+              <span class="number">16</span><code> useEffect(() =&gt; {</code>
+            </div>
+            <div class="line plus">
+              <span class="number">17</span
+              ><code
+                >+ <span class="keyword">const</span> controller = new
+                AbortController();</code
+              >
+            </div>
+            <div class="line plus">
+              <span class="number">18</span
+              ><code
+                >+ <span class="keyword">const</span> requestId =
+                ++latestRequest.current;</code
+              >
+            </div>
+            <div class="line"><span class="number">19</span><code> </code></div>
+            <div class="line minus">
+              <span class="number">20</span
+              ><code>− search(query).then(setResults);</code>
+            </div>
+            <div class="line plus">
+              <span class="number">20</span
+              ><code>+ search(query, controller.signal)</code>
+            </div>
+            <div class="line plus">
+              <span class="number">21</span
+              ><code>+ .then((nextResults) =&gt; {</code>
+            </div>
+            <div class="line plus">
+              <span class="number">22</span
+              ><code
+                >+
+                <span class="comment"
+                  >// Only the latest query can update the list.</span
+                ></code
+              >
+            </div>
+            <div class="line plus">
+              <span class="number">23</span
+              ><code
+                >+ <span class="keyword">if</span> (requestId !==
+                latestRequest.current) return;</code
+              >
+            </div>
+            <div class="line plus">
+              <span class="number">24</span
+              ><code>+ setResults(nextResults);</code>
+            </div>
+            <div class="line plus">
+              <span class="number">25</span><code>+ });</code>
+            </div>
+            <div class="line"><span class="number">26</span><code> </code></div>
+            <div class="line plus">
+              <span class="number">27</span
+              ><code
+                >+ <span class="keyword">return</span> () =&gt;
+                controller.abort();</code
+              >
+            </div>
+            <div class="line">
+              <span class="number">28</span><code> }, [query]);</code>
+            </div>
+            <div class="line"><span class="number">29</span><code> </code></div>
+            <div class="line">
+              <span class="number">30</span
+              ><code> <span class="keyword">return</span> results;</code>
+            </div>
+            <div class="line"><span class="number">31</span><code>}</code></div>
+          </div>
+        </section>
+      </div>
+      <p class="note">
+        This preview uses an invented pull request. It does not connect to
+        Bitbucket.
+      </p>
+    </main>
+    <script src="/content.js"></script>
+  </body>
+</html>
