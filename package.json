@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-pr-description",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Read Bitbucket pull request descriptions beside your code review.",
   "license": "MIT",
